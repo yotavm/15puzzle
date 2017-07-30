@@ -1,7 +1,29 @@
 .App {
   display: flex;
+  flex-direction: column;
   flex: 1;
   width: 100%;
   justify-content: center;
   align-items: center;
+}
+.TextContiner{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.Game{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.Title{
+  font-size: 38px;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  font-family: GT-Walsheim;
 }

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import keydown from 'react-keydown';
+import keydown,{Keys} from 'react-keydown';
 import background from './images/background-image.jpg'
 import {Piece} from '../'
 import './Puzzle.css';
 import _ from 'lodash';
 
-
+const {UP,DOWN,RIGHT,LEFT} = Keys
 class Puzzle extends Component {
 constructor(){
   super()
   this.piecesNum = 16;
   this.state={
     board:[],
-    pieces:[]
+    pieces:[],
+    gameBoard:[]
   }
 }
 componentWillMount(){
@@ -40,15 +41,15 @@ buildPuzzle(){
     positions.x = (i%4) * stepX;
     positions.y = counter * stepY;
     let piece = {pieceSize,backgroundPosition:{...positions}}
-    pieces.push({id:i+1,...piece});
-    board.push({positions:{...positions}});
+    pieces.push({id:i,...piece});
+    board.push({boardPlace:{col:(i%4),row:counter},positions:{...positions}});
   }
-  this.setState((state) => ({board,pieces}))
+  this.setState((state) => ({board,pieces,gameBoard:board}))
 }
 
 renderPieces(data,index){
   const piece = data
-  const positions = this.state.board[index].positions;
+  const positions = this.state.gameBoard[index].positions;
   if(index===this.piecesNum-1){
     return;
   }
@@ -63,22 +64,55 @@ renderPieces(data,index){
       image={background} />
   )
 }
- change(){
-   const b = _.shuffle(this.state.board);
-   this.setState({pieces:b})
- }
-
  shuffle(){
-   const b = _.shuffle(this.state.board);
+   const shuffle = _.shuffle(this.state.gameBoard);
    this.setState((state)=>{
-       state.board = b;
+       state.gameBoard = shuffle;
    })
 
  }
 
- @keydown('up', 'down', 'right', 'left' )
+ @keydown(UP,DOWN,RIGHT,LEFT)
  move(event){
-   console.log(event);
+   const emptyBoardPlace = this.state.gameBoard[this.piecesNum-1].boardPlace;
+   let row;
+   let col;
+   switch (event.which) {
+     case UP:
+       row=emptyBoardPlace.row+1;
+       col=emptyBoardPlace.col;
+       this.piecesToMove(col,row);
+      break;
+     case DOWN:
+        row=emptyBoardPlace.row-1;
+        col=emptyBoardPlace.col;
+        this.piecesToMove(col,row);
+      break;
+     case LEFT:
+         row=emptyBoardPlace.row;
+         col=emptyBoardPlace.col+1;
+         this.piecesToMove(col,row);
+       break;
+     case RIGHT:
+         row=emptyBoardPlace.row;
+         col=emptyBoardPlace.col-1;
+         this.piecesToMove(col,row);
+      break;
+     default:
+
+   }
+ }
+
+ piecesToMove(col,row){
+     const to = 15;
+     const from = _.findIndex(this.state.gameBoard, {boardPlace:{row,col}})
+     const temp = this.state.gameBoard[15];
+     if(from!==-1){
+       this.setState((state)=>{
+         state.gameBoard[to] =  state.gameBoard[from];
+         state.gameBoard[from] = temp;
+       })
+     }
  }
 
 
