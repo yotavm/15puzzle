@@ -1,0 +1,28 @@
+.timerContiner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+.timer {
+  display: flex;
+  flex-direction: row;
+  width: 100px;
+  flex: 1;
+}
+.number{
+  font-size: 25px;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  font-weight: 300;
+  font-family: GT-Walsheim;
+}
+
+.timerTitle{
+  font-size: 15px;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  font-weight: 300;
+  font-family: GT-Walsheim;
+}

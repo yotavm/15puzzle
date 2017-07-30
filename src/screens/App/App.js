@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Puzzle} from '../../components'
+import {Puzzle,Timer,Button} from '../../components'
 
 class App extends Component {
   render() {
@@ -13,6 +13,15 @@ class App extends Component {
         <div className='Game'>
           <Puzzle bordeSize={{width:500,height:500}}/>
         </div>
+        <div className='actions'>
+          <div className='buttonContiner'>
+            <Button>START PUZZLE</Button>
+            <br/>
+            <Button>SCORE BOARD</Button>
+          </div>
+          <Timer/>
+        </div>
+
       </div>
     );
   }

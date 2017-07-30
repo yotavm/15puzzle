@@ -20,7 +20,9 @@ buildStyle(){
 
 render() {
     return (
-      <div id={this.props.id} className='piece' style={this.buildStyle()}/>
+      <div id={this.props.id} className='piece' style={this.buildStyle()}>
+        <span className='id'>{this.props.id+1}</span>
+      </div>
     );
   }
 }

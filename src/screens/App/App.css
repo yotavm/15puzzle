@@ -14,16 +14,29 @@
 }
 .Game{
   display: flex;
+  flex:1;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
 }
 .Title{
-  font-size: 38px;
+  font-size: 40px;
   letter-spacing: .04em;
   line-height: 1.2;
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
   font-family: GT-Walsheim;
+}
+.actions{
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+}
+.buttonContiner{
+  display: flex;
+  flex-direction: row;
+  justify-content:center;
+  align-items:center;
 }
