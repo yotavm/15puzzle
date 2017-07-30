@@ -75,6 +75,7 @@ renderPieces(data,index){
    })
 
  }
+
  @keydown('up', 'down', 'right', 'left' )
  move(event){
    console.log(event);
