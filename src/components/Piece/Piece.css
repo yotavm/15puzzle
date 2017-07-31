@@ -4,15 +4,7 @@
   transition: 0.5s;
   transform: scale(0.989);
 }
-.Title{
-  font-size: 38px;
-  letter-spacing: .04em;
-  line-height: 1.2;
-  font-weight: 700;
-  margin: 0;
-  text-transform: uppercase;
-  font-family: GT-Walsheim;
-}
+
 .id{
   color:#000;
   font-family: GT-Walsheim;

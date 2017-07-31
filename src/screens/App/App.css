@@ -2,10 +2,19 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 100%;
   justify-content: center;
   align-items: center;
 }
+.Title{
+  letter-spacing: .04em;
+  line-height: 1.2;
+  font-weight: 700;
+  margin: auto;
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-family: GT-Walsheim;
+}
+
 .TextContiner{
   display: flex;
   flex-direction: column;
@@ -16,18 +25,10 @@
   display: flex;
   flex:1;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
 }
-.Title{
-  font-size: 40px;
-  letter-spacing: .04em;
-  line-height: 1.2;
-  font-weight: 700;
-  margin: 0;
-  text-transform: uppercase;
-  font-family: GT-Walsheim;
-}
+
 .actions{
   display: flex;
   flex-direction: column;
@@ -36,7 +37,25 @@
 }
 .buttonContiner{
   display: flex;
-  flex-direction: row;
   justify-content:center;
   align-items:center;
+}
+
+@media screen and (min-width: 500px){
+  .Title{
+    font-size: 40px;
+  }
+  .buttonContiner{
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .Title{
+    font-size: 20px;
+
+  }
+  .buttonContiner{
+    flex-direction: column;
+  }
 }

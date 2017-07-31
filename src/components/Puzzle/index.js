@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {Keys,keydownScoped} from 'react-keydown';
+import Swipeable from 'react-swipeable'
 import background from './images/background-image.jpg'
 import {Piece} from '../'
 import './Puzzle.css';
 import _ from 'lodash';
+
 
 const {UP,DOWN,RIGHT,LEFT} = Keys
 class Puzzle extends Component {
@@ -11,6 +13,7 @@ constructor(){
   super()
   this.piecesNum = 16;
   this.checkSolve = this.checkSolve.bind(this);
+  this.handleSwipe = this.handleSwipe.bind(this);
   this.state={
     start:false,
     board:[],
@@ -22,14 +25,18 @@ componentWillMount(){
   this.buildPuzzle();
 }
 
+componentDidUpdate(){
+  if(this.state.start){
+    this.checkSolve();
+  }
+}
+
 
 componentWillReceiveProps(nextProps){
   if(nextProps.start && !this.state.start){
     this.setState({start:true})
     this.shuffle();
-
   }
-
 }
 
 
@@ -58,6 +65,7 @@ buildPuzzle(){
     board.push({boardPlace:{col:(i%4),row:counter},positions:{...positions}});
   }
   this.setState((state) => ({board,pieces,gameBoard:board}))
+
 }
 
 renderPieces(data,index){
@@ -136,15 +144,29 @@ renderPieces(data,index){
          state.gameBoard[from] = temp;
        })
      }
-     this.checkSolve()
  }
+
+ handleSwipe(event){
+   this.move({which:event})
+ }
+
+
+
 
 
 render() {
     return (
-      <div className='puzzle' style={this.props.bordeSize}>
-        {this.state.pieces.map((entry,index) => this.renderPieces(entry,index))}
-      </div>
+      <Swipeable
+        preventDefaultTouchmoveEvent={true}
+        onSwipedUp={()=>this.handleSwipe(UP)}
+        onSwipedDown={()=>this.handleSwipe(DOWN)}
+        onSwipedRight={()=>this.handleSwipe(RIGHT)}
+        onSwipedLeft={()=>this.handleSwipe(LEFT)}
+              >
+        <div className='puzzle' style={this.props.bordeSize}>
+          {this.state.pieces.map((entry,index) => this.renderPieces(entry,index))}
+        </div>
+      </Swipeable>
     );
   }
 }

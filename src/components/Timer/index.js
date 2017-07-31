@@ -11,6 +11,7 @@ class Timer extends Component {
     this.tick = this.tick.bind(this);
     this.saveResult =this.saveResult.bind(this);
     this.state = {
+      title:true,
       start:false,
       hours:0,
       minutes:0,
@@ -18,16 +19,33 @@ class Timer extends Component {
     }
   }
   componentWillMount(){
-
+    if(this.props.setTime){
+      this.setTime(this.props.setTime);
+      this.setState({
+        title:false,
+      })
+    }
+  }
+  renderTitle(){
+    if(this.state.title){
+      return <div className="timerTitle">TIMER</div>
+    }else{
+      return
+    }
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.start && !this.state.start){
       this.setState({start:true})
       this.startTimer();
-    }else if(!nextProps.start){
-      this.stopTimer();
+    }else if(!this.state.start && nextProps.save){
+      console.log('yotav');
+      this.setState({start:false})
       this.saveResult();
+      this.stopTimer();
+    }else if(!nextProps.start){
+      this.setState({start:false})
+      this.stopTimer();
     }
   }
 
@@ -37,6 +55,13 @@ class Timer extends Component {
   }
   tick(){
     this.distance += 1000;
+    this.setState({hours:Math.floor((this.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))});
+    this.setState({minutes:Math.floor((this.distance % (1000 * 60 * 60)) / (1000 * 60))});
+    this.setState({seconds:Math.floor((this.distance % (1000 * 60)) / 1000)});
+  }
+
+  setTime(distance){
+    this.distance = distance
     this.setState({hours:Math.floor((this.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))});
     this.setState({minutes:Math.floor((this.distance % (1000 * 60 * 60)) / (1000 * 60))});
     this.setState({seconds:Math.floor((this.distance % (1000 * 60)) / 1000)});
@@ -54,11 +79,17 @@ class Timer extends Component {
       scoreBoard.push(score)
       scoreBoard = _.sortBy(scoreBoard,['1']).slice(0,10);
     }
+    this.setState({start:false});
     reactLocalStorage.setObject('scoreBoard',scoreBoard);
   }
 
   stopTimer(){
     clearInterval(this.interval);
+    this.setState({
+      hours:0,
+      minutes:0,
+      seconds:0,
+    })
   }
 
   //add zero to timer
@@ -70,7 +101,7 @@ class Timer extends Component {
   render(){
 
     return(
-    <div onClick={()=>this.saveResult()} className='timerContiner'>
+    <div className='timerContiner'>
       <div className='timer'>
         <div className="number">{this._pad(this.state.hours,2)}</div>
         <div className="number">:</div>
@@ -78,7 +109,7 @@ class Timer extends Component {
         <div className="number">:</div>
         <div className="number">{this._pad(this.state.seconds,2)}</div>
       </div>
-      <div className="timerTitle">TIMER</div>
+      {this.renderTitle()}
     </div>)
   }
 
