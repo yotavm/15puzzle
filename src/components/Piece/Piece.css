@@ -2,7 +2,7 @@
   background-repeat: no-repeat;
   position: absolute;
   transition: 0.5s;
-
+  transform: scale(0.989);
 }
 .Title{
   font-size: 38px;

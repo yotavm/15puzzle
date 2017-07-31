@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import keydown,{Keys} from 'react-keydown';
+import {Keys,keydownScoped} from 'react-keydown';
 import background from './images/background-image.jpg'
 import {Piece} from '../'
 import './Puzzle.css';
@@ -10,15 +10,28 @@ class Puzzle extends Component {
 constructor(){
   super()
   this.piecesNum = 16;
+  this.checkSolve = this.checkSolve.bind(this);
   this.state={
+    start:false,
     board:[],
     pieces:[],
-    gameBoard:[]
+    gameBoard:[],
   }
 }
 componentWillMount(){
   this.buildPuzzle();
 }
+
+
+componentWillReceiveProps(nextProps){
+  if(nextProps.start && !this.state.start){
+    this.setState({start:true})
+    this.shuffle();
+
+  }
+
+}
+
 
 buildPuzzle(){
   const {bordeSize} = this.props;
@@ -72,34 +85,44 @@ renderPieces(data,index){
 
  }
 
- @keydown(UP,DOWN,RIGHT,LEFT)
- move(event){
-   const emptyBoardPlace = this.state.gameBoard[this.piecesNum-1].boardPlace;
-   let row;
-   let col;
-   switch (event.which) {
-     case UP:
-       row=emptyBoardPlace.row+1;
-       col=emptyBoardPlace.col;
-       this.piecesToMove(col,row);
-      break;
-     case DOWN:
-        row=emptyBoardPlace.row-1;
-        col=emptyBoardPlace.col;
-        this.piecesToMove(col,row);
-      break;
-     case LEFT:
-         row=emptyBoardPlace.row;
-         col=emptyBoardPlace.col+1;
-         this.piecesToMove(col,row);
-       break;
-     case RIGHT:
-         row=emptyBoardPlace.row;
-         col=emptyBoardPlace.col-1;
-         this.piecesToMove(col,row);
-      break;
-     default:
+ checkSolve(){
+   const {onSolve} = this.props;
+   if(_.isEqual(this.state.board,this.state.gameBoard)){
+    console.log('yesss!!!!!');
+    this.setState({start:false})
+    onSolve();
+   }
+ }
 
+ @keydownScoped(UP,DOWN,RIGHT,LEFT)
+ move(event){
+     if(this.state.start){
+       const emptyBoardPlace = this.state.gameBoard[this.piecesNum-1].boardPlace;
+       let row;
+       let col;
+       switch (event.which) {
+         case UP:
+           row=emptyBoardPlace.row+1;
+           col=emptyBoardPlace.col;
+           this.piecesToMove(col,row);
+          break;
+         case DOWN:
+            row=emptyBoardPlace.row-1;
+            col=emptyBoardPlace.col;
+            this.piecesToMove(col,row);
+          break;
+         case LEFT:
+             row=emptyBoardPlace.row;
+             col=emptyBoardPlace.col+1;
+             this.piecesToMove(col,row);
+           break;
+         case RIGHT:
+             row=emptyBoardPlace.row;
+             col=emptyBoardPlace.col-1;
+             this.piecesToMove(col,row);
+          break;
+         default:
+     }
    }
  }
 
@@ -113,12 +136,13 @@ renderPieces(data,index){
          state.gameBoard[from] = temp;
        })
      }
+     this.checkSolve()
  }
 
 
 render() {
     return (
-      <div onClick={()=>this.shuffle()} className='puzzle' style={this.props.bordeSize}>
+      <div className='puzzle' style={this.props.bordeSize}>
         {this.state.pieces.map((entry,index) => this.renderPieces(entry,index))}
       </div>
     );
